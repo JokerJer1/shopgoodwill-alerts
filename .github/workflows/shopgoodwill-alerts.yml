@@ -1,0 +1,38 @@
+name: ShopGoodwill Alerts
+
+on:
+  schedule:
+    # Run every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allow manual runs
+
+jobs:
+  check-alerts:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Set up configuration
+      env:
+        PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
+        PUSHOVER_USER: ${{ secrets.PUSHOVER_USER }}
+        SHOPGOODWILL_USERNAME: ${{ secrets.SHOPGOODWILL_USERNAME }}
+        SHOPGOODWILL_PASSWORD: ${{ secrets.SHOPGOODWILL_PASSWORD }}
+      run: |
+        python setup-github.py
+        
+    - name: Run ShopGoodwill alerts
+      run: |
+        python alert_on_new_query_results.py --all

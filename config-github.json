@@ -1,0 +1,33 @@
+{
+    "logging": {
+        "version": 1,
+        "handlers": {
+            "consoleHandler": {
+                "class": "logging.StreamHandler",
+                "level": "INFO"
+            }
+        },
+        "loggers": {
+            "shopgoodwill_alert_on_new_query_results": {
+                "handlers": ["consoleHandler"],
+                "level": "INFO"
+            }
+        }
+    },
+    "auth_info": {
+        "username": "${SHOPGOODWILL_USERNAME}",
+        "password": "${SHOPGOODWILL_PASSWORD}"
+    },
+    "seen_listings_filename": "seen_listings.json",
+    "pushover": {
+        "token": "${PUSHOVER_TOKEN}",
+        "user": "${PUSHOVER_USER}"
+    },
+    "saved_queries": {
+        "Gaylord": {
+            "searchText": "gaylord",
+            "lowPrice": "5",
+            "highPrice": "50000"
+        }
+    }
+}

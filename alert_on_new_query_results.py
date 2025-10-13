@@ -384,6 +384,47 @@ def main():
                     formatted_msg_lines.extend(alert_lines)
 
                 logger.info("\n".join(formatted_msg_lines))
+                
+                # Send Pushover notification for new items
+                try:
+                    import requests
+                    pushover_config = config.get("pushover", {})
+                    if pushover_config.get("token") and pushover_config.get("user"):
+                        url = "https://api.pushover.net/1/messages.json"
+                        
+                        # Create message with links to new items
+                        message_lines = [f"Found {len(alert_queue)} new items in {query_name}:"]
+                        message_lines.append("")  # Empty line
+                        
+                        # Add first 5 items with links (Pushover has message length limits)
+                        for i, alert in enumerate(alert_queue[:5]):
+                            title = alert.get('title', 'No title')
+                            item_url = alert.get('url', '')
+                            price = alert.get('currentPrice', 'No price')
+                            message_lines.append(f"{i+1}. {title}")
+                            message_lines.append(f"   ${price} - {item_url}")
+                            message_lines.append("")  # Empty line between items
+                        
+                        if len(alert_queue) > 5:
+                            message_lines.append(f"... and {len(alert_queue) - 5} more items")
+                        
+                        message = "\n".join(message_lines)
+                        
+                        data = {
+                            "token": pushover_config["token"],
+                            "user": pushover_config["user"],
+                            "message": message,
+                            "title": f"New {query_name} Items!",
+                            "url": "https://shopgoodwill.com",  # Optional: link to main site
+                            "url_title": "View All Items"
+                        }
+                        response = requests.post(url, data=data)
+                        if response.status_code == 200:
+                            print(f"✅ Pushover notification sent for {query_name}")
+                        else:
+                            print(f"❌ Failed to send Pushover notification: {response.text}")
+                except Exception as e:
+                    print(f"❌ Error sending Pushover notification: {e}")
 
         except BaseException as be:
             logger.error(

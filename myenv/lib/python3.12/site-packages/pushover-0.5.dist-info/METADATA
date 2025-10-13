@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: pushover
+Version: 0.5
+Summary: Send messages via https://pushover.net/ to phones
+Home-page: http://github.com/laprice/pushover
+Author: Larry Price, Daniele Sluijters, Josh Kaizoku
+Author-email: laprice@gmail.com, github@daenney.net, kaizoku@phear.cc
+License: BSD
+Platform: UNKNOWN
+Requires-Dist: Requests (>=2.20.0)
+
+UNKNOWN
+
+
