@@ -393,20 +393,20 @@ def main():
                         url = "https://api.pushover.net/1/messages.json"
                         
                         # Create message with links to new items
-                        message_lines = [f"Found {len(alert_queue)} new items in {query_name}:"]
+                        message_lines = [f"{len(alert_queue)} {query_name}s"]
                         message_lines.append("")  # Empty line
                         
-                        # Add first 5 items with links (Pushover has message length limits)
-                        for i, alert in enumerate(alert_queue[:5]):
+                        # Add first 8 items with links (Pushover has message length limits)
+                        for i, alert in enumerate(alert_queue[:8]):
                             title = alert.get('title', 'No title')
                             item_url = alert.get('url', '')
-                            price = alert.get('currentPrice', 'No price')
+                            #price = alert.get('currentPrice', 'No price')
                             message_lines.append(f"{i+1}. {title}")
-                            message_lines.append(f"   ${price} - {item_url}")
+                            message_lines.append(f"  {item_url}")
                             message_lines.append("")  # Empty line between items
                         
-                        if len(alert_queue) > 5:
-                            message_lines.append(f"... and {len(alert_queue) - 5} more items")
+                        if len(alert_queue) > 8:
+                            message_lines.append(f"... and {len(alert_queue) - 8} more items")
                         
                         message = "\n".join(message_lines)
                         
@@ -415,7 +415,7 @@ def main():
                             "user": pushover_config["user"],
                             "message": message,
                             "title": f"New {query_name} Items!",
-                            "url": "https://shopgoodwill.com",  # Optional: link to main site
+                            "url": f"https://shopgoodwill.com/categories/listing?st={query_name}&sg=&c=&s=&lp=0&hp=999999&sbn=&spo=false&snpo=false&socs=false&sd=false&sca=false&caed=12%2F1%2F2025&cadb=7&scs=false&sis=false&col=1&p=1&ps=40&desc=false&ss=0&UseBuyerPrefs=true&sus=false&cln=1&catIds=&pn=&wc=false&mci=false&hmt=false&layout=grid&ihp=true",
                             "url_title": "View All Items"
                         }
                         response = requests.post(url, data=data)
