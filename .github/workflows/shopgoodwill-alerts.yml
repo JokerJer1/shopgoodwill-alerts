@@ -2,8 +2,8 @@ name: ShopGoodwill Alerts
 
 on:
   schedule:
-    # Run every 10 minutes
-    - cron: '*/10 * * * *'
+    # Run every 60 minutes
+    - cron: '*/60 * * * *'
   workflow_dispatch: # Allow manual runs
 
 jobs:
@@ -36,3 +36,4 @@ jobs:
     - name: Run ShopGoodwill alerts
       run: |
         python alert_on_new_query_results.py --all
+
